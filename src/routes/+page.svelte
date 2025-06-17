@@ -7,7 +7,6 @@
     let imageHeight = 1080;
     let imageUrl = testImage;
     let threshold = 200;
-    let startPoint = { x: 960, y: 540 };
     let endPoint = { x: 960, y: 540 };
     let endScale = 2;
     let resolution = 100;
@@ -63,8 +62,8 @@
         for (let i = 0; i < resolution; i++) {
             let scale = 1 + (endScale - 1) * (i / resolution);
             let brightness = 1 - (i / resolution);
-            let x = startPoint.x + (endPoint.x - startPoint.x) * i / resolution;
-            let y = startPoint.y + (endPoint.y - startPoint.y) * i / resolution;
+            let x = imageWidth / 2 + (endPoint.x - imageWidth / 2) * i / resolution;
+            let y = imageHeight / 2 + (endPoint.y - imageHeight / 2) * i / resolution;
             let width = imageWidth * scale;
             let height = imageHeight * scale;
             raysCtx.translate(x, y);
@@ -91,6 +90,36 @@
 <canvas bind:this={thresholdCanvas} width={imageWidth} height={imageHeight} />
 <canvas bind:this={raysCanvas} width={imageWidth} height={imageHeight} />
 <canvas bind:this={outputCanvas} width={imageWidth} height={imageHeight} />
+<br />
+<br />
+<label>
+    Threshold:
+    <input type="range" min="0" max="255" bind:value={threshold} on:change={render} />
+    <input type="number" min="0" max="255" bind:value={threshold} on:change={render} />
+</label>
+<br />
+<label>
+    End Point X:
+    <input type="range" min="0" max={imageWidth} bind:value={endPoint.x} on:change={render} />
+    <input type="number" min="0" bind:value={endPoint.x} on:change={render} />
+</label>
+<label>
+    End Point Y:
+    <input type="range" min="0" max={imageHeight} bind:value={endPoint.y} on:change={render} />
+    <input type="number" min="0" bind:value={endPoint.y} on:change={render} />
+</label>
+<br />
+<label>
+    End Scale:
+    <input type="range" min="0" max="5" step="0.05" bind:value={endScale} on:change={render} />
+    <input type="number" min="0" max="5" step="0.05" bind:value={endScale} on:change={render} />
+</label>
+<br />
+<label>
+    Resolution:
+    <input type="range" min="1" max="1000" bind:value={resolution} on:change={render} />
+    <input type="number" min="1" max="1000" bind:value={resolution} on:change={render} />
+</label>
 
 <style>
     canvas {
