@@ -9,6 +9,7 @@
     let threshold = 200;
     let endPoint = { x: 960, y: 540 };
     let endScale = 2;
+    let softening = 10;
     let resolution = 100;
 
     
@@ -62,12 +63,13 @@
         for (let i = 0; i < resolution; i++) {
             let scale = 1 + (endScale - 1) * (i / resolution);
             let brightness = 1 - (i / resolution);
+            let blur = softening * (i / resolution);
             let x = imageWidth / 2 + (endPoint.x - imageWidth / 2) * i / resolution;
             let y = imageHeight / 2 + (endPoint.y - imageHeight / 2) * i / resolution;
             let width = imageWidth * scale;
             let height = imageHeight * scale;
             raysCtx.translate(x, y);
-            raysCtx.filter = `brightness(${brightness})`;
+            raysCtx.filter = `brightness(${brightness}) blur(${blur}px)`;
             raysCtx.drawImage(thresholdCanvas, -width / 2, -height / 2, width, height);
             raysCtx.restore();
             raysCtx.save();
@@ -111,8 +113,14 @@
 <br />
 <label>
     End Scale:
-    <input type="range" min="0" max="5" step="0.05" bind:value={endScale} on:change={render} />
-    <input type="number" min="0" max="5" step="0.05" bind:value={endScale} on:change={render} />
+    <input type="range" min="1" max="5" step="0.05" bind:value={endScale} on:change={render} />
+    <input type="number" min="1" max="5" step="0.05" bind:value={endScale} on:change={render} />
+</label>
+<br />
+<label>
+    Softening:
+    <input type="range" min="0" max="25" step="1" bind:value={softening} on:change={render} />
+    <input type="number" min="0" max="25" step="1" bind:value={softening} on:change={render} />
 </label>
 <br />
 <label>
