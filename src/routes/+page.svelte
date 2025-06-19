@@ -11,6 +11,8 @@
     let endScale = 2;
     let softening = 10;
     let resolution = 100;
+    /** @type {"linear" | "elliptical"} */
+    let taperMethod = "elliptical";
 
     
     let /** @type {HTMLCanvasElement} */ baseCanvas,
@@ -63,6 +65,9 @@
         for (let i = 0; i < resolution; i++) {
             let scale = 1 + (endScale - 1) * (i / resolution);
             let brightness = 1 - (i / resolution);
+            if (taperMethod == "elliptical") {
+                brightness = 1 - Math.sqrt(1 - (i / resolution - 1) ** 2);
+            }
             let blur = softening * (i / resolution);
             let x = imageWidth / 2 + (endPoint.x - imageWidth / 2) * i / resolution;
             let y = imageHeight / 2 + (endPoint.y - imageHeight / 2) * i / resolution;
