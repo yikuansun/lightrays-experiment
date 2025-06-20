@@ -61,6 +61,7 @@
 
         let raysCtx = raysCanvas.getContext("2d");
         raysCtx.globalCompositeOperation = "lighten";
+        raysCtx.clearRect(0, 0, imageWidth, imageHeight);
         raysCtx.save();
         for (let i = 0; i < resolution; i++) {
             let scale = 1 + (endScale - 1) * (i / resolution);
@@ -88,8 +89,9 @@
         outputCtx.restore();
     }
 
-    onMount(() => {
-        render();
+    onMount(async () => {
+        await render();
+        await render();
     });
 </script>
 
